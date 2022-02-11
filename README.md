@@ -9,10 +9,14 @@ This is a sample Docker Compose configuration to run an NGINX server with a self
 
 ## Usage
 
+Build images and run containers.
+
 ```zsh
 docker compose build
 docker compose up -d
 ```
+
+You can check the NGINX server runs with a self-signed certificate.
 
 ```zsh
 curl --insecure \
@@ -49,6 +53,12 @@ curl --insecure \
     </div>
 </body>
 </html>
+```
+
+Stop containers and remove resources after you've finished.
+
+```zsh
+docker compose down
 ```
 
 ## References
