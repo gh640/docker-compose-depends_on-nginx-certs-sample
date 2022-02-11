@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  front:
+    build: ./services/front
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      NGINX_SERVER_NAME: example.local
+      NGINX_HSTS_MAX_AGE: 31536000
+      NGINX_PROXY_PASS: http://app:8000
+    volumes:
+      - front_certs:/etc/ssl/certs/nginx:ro,cached
+    depends_on:
+      certs:
+        condition: service_completed_successfully
+      app:
+        condition: service_started
+  certs:
+    build: ./services/certs
+    volumes:
+      - front_certs:/app:delegated
+    environment:
+      DOMAIN: example.local
+  app:
+    build: ./services/app
+
+volumes:
+  front_certs:

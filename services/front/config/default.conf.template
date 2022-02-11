@@ -1,0 +1,23 @@
+server {
+    listen 80;
+    server_name ${NGINX_SERVER_NAME};
+    return 301 https://$host$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name ${NGINX_SERVER_NAME};
+
+    charset utf8;
+
+    # HSTS ヘッダー
+    add_header Strict-Transport-Security "max-age=${NGINX_HSTS_MAX_AGE}" always;
+
+    # `signed.crt` と `domain.key` は事前に生成し volumes で設置しておく必要があります
+    ssl_certificate /etc/ssl/certs/nginx/signed.crt;
+    ssl_certificate_key /etc/ssl/certs/nginx/domain.key;
+
+    location / {
+        proxy_pass ${NGINX_PROXY_PASS};
+    }
+}
