@@ -19,10 +19,10 @@ services:
         condition: service_started
   certs:
     build: ./services/certs
-    volumes:
-      - front_certs:/app:delegated
     environment:
       DOMAIN: example.local
+    volumes:
+      - front_certs:/app:delegated
   app:
     build: ./services/app
 
